@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TicTacToeMultiplayer
+namespace TicTacToeSingle
 {
-    class TicTacToeM
+    class TicTacToeS
     {
         private char[,] board;
         private char player;
 
-        public TicTacToeM()
+        public TicTacToeS()
         {
             board = new char[3, 3];
             player = 'X';
@@ -48,21 +48,61 @@ namespace TicTacToeMultiplayer
                 Console.Clear();
                 ShowBoard();
 
-                Console.WriteLine($"Player {player} turn:");
-                Console.Write("Enter row: ");
-                int row = int.Parse(Console.ReadLine());
-                Console.Write("Enter column: ");
-                int column = int.Parse(Console.ReadLine());
-
-                if (ValidMove(row, column))
+                if (player == 'X')
                 {
+                    Console.WriteLine($"Player {player} turn:");
+                    Console.Write("Enter row: ");
+                    int row = int.Parse(Console.ReadLine());
+                    Console.Write("Enter column: ");
+                    int column = int.Parse(Console.ReadLine());
+
+                    if (ValidMove(row, column))
+                    {
+                        Move(row, column);
+
+                        if (Win())
+                        {
+                            Console.Clear();
+                            ShowBoard();
+                            Console.WriteLine($"Player {player} win!");
+                            return;
+                        }
+                        else if (BoardFull())
+                        {
+                            Console.Clear();
+                            ShowBoard();
+                            Console.WriteLine("Draw!");
+                            return;
+                        }
+                        else
+                        {
+                            SwitchPlayer();
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error! Please try again!");
+                        Console.ReadKey();
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Computer ({player}) turn:");
+
+                    int row, column;
+                    do
+                    {
+                        row = r.Next(3);
+                        column = r.Next(3);
+                    } while (!ValidMove(row, column));
+
                     Move(row, column);
 
                     if (Win())
                     {
                         Console.Clear();
                         ShowBoard();
-                        Console.WriteLine($"Player {player} win!");
+                        Console.WriteLine($"Computer ({player}) win!");
                         return;
                     }
                     else if (BoardFull())
@@ -76,11 +116,6 @@ namespace TicTacToeMultiplayer
                     {
                         SwitchPlayer();
                     }
-                }
-                else
-                {
-                    Console.WriteLine("Error! Please try again!");
-                    Console.ReadKey();
                 }
             }
         }
@@ -100,7 +135,6 @@ namespace TicTacToeMultiplayer
                 return true;
             }
         }
-
         private void Move(int row, int column)
         {
             board[row, column] = player;
@@ -110,26 +144,24 @@ namespace TicTacToeMultiplayer
         {
             for (int i = 0; i < 3; i++)
             {
-                if (board[i, 0] == player && board[i, 1] == player && board[i, 2] == player)
+                if (board[i, 0] == board[i, 1] && board[i, 1] == board[i, 2] && board[i, 0] != '-')
                 {
                     return true;
                 }
             }
-
-            for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
             {
-                if (board[0, i] == player && board[1, i] == player && board[2, i] == player)
+                if (board[0, j] == board[1, j] && board[1, j] == board[2, j] && board[0, j] != '-')
                 {
                     return true;
                 }
             }
-
-            if (board[0, 0] == player && board[1, 1] == player && board[2, 2] == player)
+            if (board[0, 0] == board[1, 1] && board[1, 1] == board[2, 2] && board[0, 0] != '-')
             {
                 return true;
             }
 
-            if (board[0, 2] == player && board[1, 1] == player && board[2, 0] == player)
+            if (board[0, 2] == board[1, 1] && board[1, 1] == board[2, 0] && board[0, 2] != '-')
             {
                 return true;
             }

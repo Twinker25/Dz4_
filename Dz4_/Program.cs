@@ -1,5 +1,5 @@
-﻿using TicTacToeGame;
-
+﻿using TicTacToeMultiplayer;
+using TicTacToeSingle;
 namespace Dz4_
 {
     internal class Program
@@ -14,11 +14,12 @@ namespace Dz4_
                 switch (choice)
                 {
                     case 1:
-                        
+                        TicTacToeS ticTacToeS = new TicTacToeS();
+                        ticTacToeS.Play();
                         break;
                     case 2:
-                        TicTacToe ticTacToe = new TicTacToe();
-                        ticTacToe.Play();
+                        TicTacToeM ticTacToeM = new TicTacToeM();
+                        ticTacToeM.Play();
                         break;
                     case 3:
                         Console.Write("\nEnter text: ");
